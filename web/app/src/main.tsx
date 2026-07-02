@@ -23,7 +23,7 @@ createRoot(document.getElementById('root')!).render(
       config={{
         defaultChain: bradbury as any,
         supportedChains: [bradbury as any],
-        embeddedWallets: { createOnLogin: "users-without-wallets" },
+        embeddedWallets: { createOnLogin: "users-without-wallets" } as any,
         appearance: { theme: "dark", accentColor: "#00ff66" }, // updated accent for GreenShield
       }}
     >

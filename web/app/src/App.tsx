@@ -66,7 +66,7 @@ function App() {
           args: []
         });
         
-        const ids: string[] = await reader.readContract({
+        const ids: any = await reader.readContract({
           address: CONTRACT_ADDRESS,
           functionName: "list_bonds",
           args: []
