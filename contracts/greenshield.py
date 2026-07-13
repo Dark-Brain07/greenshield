@@ -438,6 +438,44 @@ Respond ONLY as JSON:
 
     # ═══════════════════════════ ADMIN / KEEPER ═════════════════════════════
     @gl.public.write
+    def release_bond(self, bond_id: str) -> dict:
+        """Allow author to withdraw stake if the Bond is VERIFIED."""
+        if bond_id not in self.bond_tree:
+            raise gl.vm.UserError(f"{E_EXPECTED} Bond not found.")
+        n = self.bond_tree[bond_id]
+        if n.status != "VERIFIED":
+            raise gl.vm.UserError(f"{E_EXPECTED} Bond must be VERIFIED to release stake.")
+        
+        stake = int(n.stake_wei)
+        n.stake_wei = u256(0)
+        n.status = "RELEASED"
+        
+        if stake > 0:
+            gl.get_contract_at(Address(n.author)).emit_transfer(value=u256(stake))
+            self.total_staked_wei = u256(int(self.total_staked_wei) - stake)
+            
+        return {"bond_id": bond_id, "released_wei": str(stake)}
+
+    @gl.public.write
+    def slash_bond(self, bond_id: str) -> dict:
+        """Slash a GREENWASHING bond and send stake to admin."""
+        if bond_id not in self.bond_tree:
+            raise gl.vm.UserError(f"{E_EXPECTED} Bond not found.")
+        n = self.bond_tree[bond_id]
+        if n.status != "GREENWASHING":
+            raise gl.vm.UserError(f"{E_EXPECTED} Bond must be GREENWASHING to slash.")
+            
+        stake = int(n.stake_wei)
+        n.stake_wei = u256(0)
+        n.status = "SLASHED"
+        
+        if stake > 0:
+            gl.get_contract_at(self.admin).emit_transfer(value=u256(stake))
+            self.total_staked_wei = u256(int(self.total_staked_wei) - stake)
+            
+        return {"bond_id": bond_id, "slashed_wei": str(stake)}
+
+    @gl.public.write
     def advance_epoch(self) -> int:
         if gl.message.sender_address != self.admin:
             raise gl.vm.UserError(f"{E_EXPECTED} Only admin can advance epoch.")
@@ -470,6 +508,7 @@ Respond ONLY as JSON:
         n = self.bond_tree[bond_id]
         return {
             "bond_id": n.bond_id,
+            "claim": b64_decode(n.claim_encoded),
             "author": n.author,
             "status": n.status,
             "current_score": int(n.current_score),

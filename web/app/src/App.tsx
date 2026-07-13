@@ -82,7 +82,7 @@ function App() {
             });
             fetchedBonds.push({
               id: b.bond_id,
-              claim: atob(b.claim_encoded || ""),
+              claim: b.claim || atob(b.claim_encoded || ""),
               score: Number(b.current_score || 0),
               status: b.status,
               stake: `${formatGen(b.stake_wei)} GEN`,
@@ -116,6 +116,28 @@ function App() {
       clearInterval(interval);
     };
   }, []);
+
+  const writeTx = async (functionName: string, args: any[]) => {
+    if (!authenticated || !wallet) { login(); return; }
+    try {
+      await wallet.switchChain(4221);
+      const provider = await wallet.getEthereumProvider();
+      const client = createClient({ chain: testnetBradbury, account: wallet.address as any, provider });
+      const tx = await client.writeContract({
+        address: CONTRACT_ADDRESS,
+        functionName,
+        args
+      });
+      await client.waitForTransactionReceipt({ hash: tx });
+      alert(`Transaction successful!`);
+    } catch (err: any) {
+      alert(`Error: ${err.message}`);
+    }
+  };
+
+  const handleEvolve = (id: string) => writeTx("evolve_bond_epoch", [id]);
+  const handleRelease = (id: string) => writeTx("release_bond", [id]);
+  const handleSlash = (id: string) => writeTx("slash_bond", [id]);
 
   const handleMint = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -313,6 +335,19 @@ function App() {
                       <div className="form-label">Staked</div>
                       <div style={{ fontWeight: '600' }}>{bond.stake}</div>
                     </div>
+                  </div>
+                  
+                  {/* Action buttons */}
+                  <div style={{ display: 'flex', gap: '0.5rem', marginTop: '1rem' }}>
+                    {bond.status === 'ACTIVE' && (
+                       <button className="btn btn-primary" style={{ flex: 1, padding: '0.5rem', minHeight: '36px', fontSize: '0.85rem' }} onClick={() => handleEvolve(bond.id)}>Evolve Bond</button>
+                    )}
+                    {bond.status === 'VERIFIED' && (
+                       <button className="btn btn-primary" style={{ flex: 1, padding: '0.5rem', backgroundColor: 'var(--accent-color)', minHeight: '36px', fontSize: '0.85rem' }} onClick={() => handleRelease(bond.id)}>Release Stake</button>
+                    )}
+                    {bond.status === 'GREENWASHING' && (
+                       <button className="btn btn-primary" style={{ flex: 1, padding: '0.5rem', backgroundColor: '#e74c3c', minHeight: '36px', fontSize: '0.85rem' }} onClick={() => handleSlash(bond.id)}>Slash Bond</button>
+                    )}
                   </div>
                 </div>
               ))
