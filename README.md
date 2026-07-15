@@ -9,8 +9,8 @@ By leveraging GenLayer's AI Equivalence Principle, GreenShield allows corporatio
 ## 🌐 Live Demo & Deployment
 
 - **Live Dashboard:** [GreenShield on Vercel](https://app-seven-eta-87.vercel.app)
-- **Intelligent Contract Address (Bradbury):** `0xc354Eb6eeFc803f255C0Fbd63A0f29397814109F`
-- **GenLayer Studio View:** [Import & View Contract](https://studio.genlayer.com/contracts?import-contract=0xc354Eb6eeFc803f255C0Fbd63A0f29397814109F)
+- **Intelligent Contract Address (Bradbury):** `0x7a678Bb644029Bde996ab497c6F65a18fA824d25`
+- **GenLayer Studio View:** [Import & View Contract](https://studio.genlayer.com/contracts?import-contract=0x7a678Bb644029Bde996ab497c6F65a18fA824d25)
 
 ## 🏗️ Architecture
 
@@ -41,8 +41,8 @@ A premium, dark-mode glassmorphism React dashboard built with Vite.
 **Description:**
 GreenShield utilizes GenLayer's AI Equivalence Principle to create the first on-chain ESG oracle. By wrapping Web2 corporate sustainability reports into non-deterministic LLM prompts, GenLayer validators reach decentralized consensus on an "Authenticity Score," creating a financially staked deterrent against corporate greenwashing.
 
-- **Contract Address:** `0xc354Eb6eeFc803f255C0Fbd63A0f29397814109F`
-- **Explorer/Studio Link:** [View on GenLayer Studio](https://studio.genlayer.com/contracts?import-contract=0xc354Eb6eeFc803f255C0Fbd63A0f29397814109F)
+- **Contract Address:** `0x7a678Bb644029Bde996ab497c6F65a18fA824d25`
+- **Explorer/Studio Link:** [View on GenLayer Studio](https://studio.genlayer.com/contracts?import-contract=0x7a678Bb644029Bde996ab497c6F65a18fA824d25)
 - **Source Code:** [https://github.com/Dark-Brain07/greenshield](https://github.com/Dark-Brain07/greenshield)
 - **Live MVP (Projects & Milestones):** [https://app-seven-eta-87.vercel.app](https://app-seven-eta-87.vercel.app)
 

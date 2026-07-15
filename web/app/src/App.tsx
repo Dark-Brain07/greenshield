@@ -4,7 +4,7 @@ import { testnetBradbury } from 'genlayer-js/chains';
 import { usePrivy, useWallets } from '@privy-io/react-auth';
 import './index.css';
 
-const CONTRACT_ADDRESS = "0x1020171756f72e3C282EEB88D64364895Bf700BD";
+const CONTRACT_ADDRESS = "0x7a678Bb644029Bde996ab497c6F65a18fA824d25";
 
 // Read-only client for fetching state without wallet
 const reader = createClient({
