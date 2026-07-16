@@ -154,7 +154,7 @@ Respond strictly in JSON format: {{"authenticity_score": <int>}}"""
         data["status"] = "SLASHED"
         
         if stake > 0:
-            gl.get_contract_at(self.admin).transfer(value=u256(stake))
+            gl.get_contract_at(self.admin).emit_transfer(value=u256(stake))
             self.total_staked = u256(int(str(self.total_staked)) - stake)
             
         self.bond_store[bond_id] = json.dumps(data)
@@ -173,7 +173,7 @@ Respond strictly in JSON format: {{"authenticity_score": <int>}}"""
         data["status"] = "RELEASED"
         
         if stake > 0:
-            gl.get_contract_at(Address(data["author"])).transfer(value=u256(stake))
+            gl.get_contract_at(Address(data["author"])).emit_transfer(value=u256(stake))
             self.total_staked = u256(int(str(self.total_staked)) - stake)
             
         self.bond_store[bond_id] = json.dumps(data)
